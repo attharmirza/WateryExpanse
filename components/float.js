@@ -22,7 +22,7 @@ AFRAME.registerComponent('floating', {
 
     var rayCreate = function (element, position) {
       element.setAttribute('id', 'ray-' + position);
-      element.setAttribute('raycaster', 'showLine: true;');
+      // element.setAttribute('raycaster', 'showLine: true;');
       element.setAttribute('rotation', {
         x: -90,
         y: 90,
@@ -69,21 +69,44 @@ AFRAME.registerComponent('floating', {
 
     rayCreate(rayFront, 'front');
     this.el.appendChild(rayFront);
+    this.rayFront = rayFront;
 
     rayCreate(rayLeft, 'left');
     this.el.appendChild(rayLeft);
+    this.rayLeft = rayLeft;
 
     rayCreate(rayRight, 'right');
     this.el.appendChild(rayRight);
+    this.rayRight = rayRight;
 
-    // console.log(scene);
-
+    document.querySelector('#ocean').addEventListener('raycaster-intersected', function (event) {
+      if (event.detail.el == rayBack) {
+        var pointBack = event.detail.intersection.point;
+        document.querySelector('#pointBack').setAttribute('position', pointBack);
+      } else if (event.detail.el == rayFront) {
+        var pointFront = event.detail.intersection.point;
+        document.querySelector('#pointFront').setAttribute('position', pointFront);
+      } else if (event.detail.el == rayLeft) {
+        var pointLeft = event.detail.intersection.point;
+        document.querySelector('#pointLeft').setAttribute('position', pointLeft);
+      } if (event.detail.el == rayRight) {
+        var pointRight = event.detail.intersection.point;
+        document.querySelector('#pointRight').setAttribute('position', pointRight);
+      }
+    });
   },
 
   tick: function() {
-    var rayBack = this.rayBack;
+    var castRay = function (element) {
+      element.removeAttribute('raycaster');
+      element.setAttribute('raycaster', 'showLine: true;');
+    }
 
-    console.log(rayBack.components.raycaster.intersectedEls[0]);
+    castRay(this.rayBack);
+    castRay(this.rayFront);
+    castRay(this.rayLeft);
+    castRay(this.rayRight);
+
   }
 
 });

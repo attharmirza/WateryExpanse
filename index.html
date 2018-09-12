@@ -28,9 +28,13 @@
     </a-assets>
 
     <!-- Environment & Objects -->
-    <a-entity position="0 1 -5" floating="width: 1.6; depth: 1.6;">
+    <a-entity position="0 1 -5" floating="width: 1.5; depth: 1.5;">
       <a-plane width="3" height="3" rotation="-90 0 0" material="color: red"></a-plane>
     </a-entity>
+    <a-box id="pointBack" width="0.2" height="0.2" depth="0.2"></a-box>
+    <a-box id="pointFront" width="0.2" height="0.2" depth="0.2"></a-box>
+    <a-box id="pointLeft" width="0.2" height="0.2" depth="0.2"></a-box>
+    <a-box id="pointRight" width="0.2" height="0.2" depth="0.2"></a-box>
 
     <!-- Defaults -->
     <a-entity id="camera1" camera look-controls="enabled: false;" position="0 2 0"></a-entity>
@@ -62,10 +66,12 @@
 
     scene.addEventListener('enter-vr', function() {
       camera1.setAttribute('look-controls', 'enabled', 'true');
+      camera1.setAttribute('wasd-controls', 'enabled', 'true');
     });
 
     scene.addEventListener('exit-vr', function() {
       camera1.setAttribute('look-controls', 'enabled', 'false');
+      camera1.setAttribute('wasd-controls', 'enabled', 'false');
     });
   </script>
 </body>
