@@ -15,34 +15,75 @@ AFRAME.registerComponent('floating', {
   },
 
   update: function() {
-    this.raycaster = new THREE.Raycaster();
+    var scene = this.el.sceneEl;
+    var depth = this.data.depth;
+    var width = this.data.width;
+    var position = this.el.components.position.data;
 
-    var data = this.data;
-    var el = this.el;
-    var rotation = el.components.rotation.data;
-    var position = el.components.position.data;
-    var raycaster = this.raycaster;
-    var scene = this.el.sceneEl.object3D;
+    var rayCreate = function (element, position) {
+      element.setAttribute('id', 'ray-' + position);
+      element.setAttribute('raycaster', 'showLine: true;');
+      element.setAttribute('rotation', {
+        x: -90,
+        y: 90,
+        z: 0
+      });
 
-    var rayOrigin = new THREE.Vector3(position.x, position.y, position.z);
-    var rayDirection = new THREE.Vector3(0, 0, 0);
+      if (position == 'back') {
+        element.setAttribute('position', {
+          x: 0,
+          y: 0,
+          z: 0 + depth
+        });
+      } else if (position == 'front') {
+        element.setAttribute('position', {
+          x: 0,
+          y: 0,
+          z: 0 - depth
+        });
+      } else if (position == 'left') {
+        element.setAttribute('position', {
+          x: 0 - width,
+          y: 0,
+          z: 0
+        });
+      } else if (position == 'right') {
+        element.setAttribute('position', {
+          x: 0 + width,
+          y: 0,
+          z: 0
+        });
+      } else {
+        console.log('please use back, right, left, or front for position');
+      };
+    }
 
-    raycaster.set(rayOrigin, rayDirection);
+    var rayBack = document.createElement('a-entity');
+    var rayFront = document.createElement('a-entity');
+    var rayLeft = document.createElement('a-entity');
+    var rayRight = document.createElement('a-entity');
 
-    var arrow = new THREE.ArrowHelper( raycaster.ray.direction, raycaster.ray.origin, 2, '#000000');
-    scene.add( arrow );
+    rayCreate(rayBack, 'back');
+    this.el.appendChild(rayBack);
+    this.rayBack = rayBack;
 
-    // console.log(raycaster.intersectObjects( scene.children ));
+    rayCreate(rayFront, 'front');
+    this.el.appendChild(rayFront);
+
+    rayCreate(rayLeft, 'left');
+    this.el.appendChild(rayLeft);
+
+    rayCreate(rayRight, 'right');
+    this.el.appendChild(rayRight);
+
+    // console.log(scene);
+
   },
 
   tick: function() {
-    var raycaster = this.raycaster;
-    var scene = this.el.sceneEl.object3D;
-    var box = document.querySelector('a-box').object3D.children;
+    var rayBack = this.rayBack;
 
-    // console.log(box)
-    // console.log(raycaster);
-    console.log(raycaster.intersectObjects( box ));
+    console.log(rayBack.components.raycaster.intersectedEls[0]);
   }
 
 });

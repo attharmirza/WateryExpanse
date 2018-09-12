@@ -28,14 +28,15 @@
     </a-assets>
 
     <!-- Environment & Objects -->
-    <a-plane width="3" height="3" position="0 1 -5" rotation="-90 0 0" material="color: red" floating="width: 3; depth: 3;"></a-plane>
-    <a-box width="3" height="3" position="0 5 -5" rotation="-90 0 0" material="color: black"></a-box>
+    <a-entity position="0 1 -5" floating="width: 1.6; depth: 1.6;">
+      <a-plane width="3" height="3" rotation="-90 0 0" material="color: red"></a-plane>
+    </a-entity>
 
     <!-- Defaults -->
     <a-entity id="camera1" camera look-controls="enabled: false;" position="0 2 0"></a-entity>
     <a-light type="directional" position="3 10 -5"></a-light>
     <a-sky segments-width="10" segments-height="10"></a-sky>
-    <a-ocean color="#FFFFFF" width="100" depth="100" density="25" speed="2"></a-ocean>
+    <a-ocean id="ocean" color="#FFFFFF" width="100" depth="100" density="25" speed="2"></a-ocean>
 
     <!-- Controllers -->
     <a-entity hand-controls="left"></a-entity>
