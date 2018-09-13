@@ -28,13 +28,27 @@
     </a-assets>
 
     <!-- Environment & Objects -->
-    <a-entity position="0 10 -8" rotation="0 28 0" floating="width: 2.3; depth: 2.3; dampening: 0.6;">
+    <a-entity position="-1 0 -8" rotation="0 28 0" floating="width: 2; depth: 2; dampening: 0.8, 0.8, 0.6; surface: #ocean;">
       <a-box id="pointAverage" width="3" height="0.7" depth="3"></a-box>
     </a-entity>
-    <a-box id="pointBack" width="0.2" height="0.2" depth="0.2"></a-box>
-    <a-box id="pointFront" width="0.2" height="0.2" depth="0.2"></a-box>
-    <a-box id="pointLeft" width="0.2" height="0.2" depth="0.2"></a-box>
-    <a-box id="pointRight" width="0.2" height="0.2" depth="0.2"></a-box>
+    <a-entity position="3 0 -5" rotation="0 18 0" floating-small="surface: #ocean;">
+      <a-box width="0.2" height="0.2" depth="0.2"></a-box>
+    </a-entity>
+    <a-entity position="-4 0 -9" rotation="0 45 0" floating-small="surface: #ocean;">
+      <a-box width="0.2" height="0.2" depth="0.2"></a-box>
+    </a-entity>
+    <a-entity position="-1 0 -3" rotation="0 10 0" floating-small="surface: #ocean;">
+      <a-box width="0.2" height="0.2" depth="0.2"></a-box>
+    </a-entity>
+    <a-entity position="1 0 -4" rotation="0 99 0" floating-small="surface: #ocean;">
+      <a-box width="0.2" height="0.2" depth="0.2"></a-box>
+    </a-entity>
+    <a-entity position="1 0 -10" rotation="0 105 0" floating-small="surface: #ocean;">
+      <a-box width="0.2" height="0.2" depth="0.2"></a-box>
+    </a-entity>
+    <a-entity position="2 0 -12" rotation="0 25 0" floating-small="surface: #ocean;">
+      <a-box width="0.2" height="0.2" depth="0.2"></a-box>
+    </a-entity>
 
     <!-- Defaults -->
     <a-entity id="camera1" camera look-controls="enabled: false;" position="0 2 0"></a-entity>

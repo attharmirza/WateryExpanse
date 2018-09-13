@@ -1,6 +1,3 @@
-// var registerComponent = require('../core/component').registerComponent;
-// var THREE = require('../../lib/three');
-
 AFRAME.registerComponent('floating', {
 
   schema: {
@@ -11,19 +8,29 @@ AFRAME.registerComponent('floating', {
     depth: {
       type: 'number',
       default: 1
+    }, 
+    dampening: {
+      type: 'array',
+      default: [1, 1, 1]
+    },
+    surface: {
+      type: 'string'
     }
   },
 
   update: function() {
+    var el = this.el;
     var scene = this.el.sceneEl;
     var depth = this.data.depth;
     var width = this.data.width;
     var dampening = this.data.dampening;
+    var surface = this.data.surface;
     var position = this.el.components.position.data;
+    
+    this.el.setAttribute('position', {x: position.x, y: position.y + 10, z: position.z });
 
     var rayCreate = function (element, position) {
       element.setAttribute('id', 'ray-' + position);
-      // element.setAttribute('raycaster', 'showLine: true;');
       element.setAttribute('rotation', {
         x: -90,
         y: 90,
@@ -93,28 +100,24 @@ AFRAME.registerComponent('floating', {
       angleZ = (Math.atan((pointLeft.y + pointRight.y)/(width * 2))) * (180/Math.PI);
       
 
-      document.querySelector('#pointAverage').setAttribute('rotation', {x: angleX * dampening, y: 0, z: angleZ * dampening});
+      el.children[0].setAttribute('rotation', {x: angleX * dampening[0], y: 0, z: angleZ * dampening[1]});
     };
 
-    document.querySelector('#ocean').addEventListener('raycaster-intersected', function (event) {
+    document.querySelector(surface).addEventListener('raycaster-intersected', function (event) {
       
       if (event.detail.el == rayBack) {
         pointBack = event.detail.intersection.point;
-        document.querySelector('#pointBack').setAttribute('position', pointBack);
       } else if (event.detail.el == rayFront) {
         pointFront = event.detail.intersection.point;
-        document.querySelector('#pointFront').setAttribute('position', pointFront);
       } else if (event.detail.el == rayLeft) {
         pointLeft = event.detail.intersection.point;
-        document.querySelector('#pointLeft').setAttribute('position', pointLeft);
       } if (event.detail.el == rayRight) {
         pointRight = event.detail.intersection.point;
-        document.querySelector('#pointRight').setAttribute('position', pointRight); 
       }
       
       var pointAverage = (pointFront.y + pointBack.y + pointLeft.y + pointRight.y)/4;
       
-      document.querySelector('#pointAverage').setAttribute('position', {y: pointAverage - 10}); 
+      el.children[0].setAttribute('position', {y: (pointAverage * dampening[2]) - 10}); 
       
       oceanTilt();
       
@@ -132,6 +135,66 @@ AFRAME.registerComponent('floating', {
     castRay(this.rayLeft);
     castRay(this.rayRight);
     
+  }
+
+});
+
+AFRAME.registerComponent('floating-small', {
+
+  schema: { 
+    surface: {
+      type: 'string'
+    }
+  },
+
+  update: function() {
+    var el = this.el;
+    var scene = this.el.sceneEl;
+    var surface = this.data.surface;
+    var position = this.el.components.position.data;
+    
+    this.el.setAttribute('position', {x: position.x, y: position.y + 10, z: position.z });
+
+    var rayCreate = function (element, position) {
+      element.setAttribute('id', 'ray-' + position);
+      element.setAttribute('rotation', {
+        x: -90,
+        y: 90,
+        z: 0
+      }); 
+      element.setAttribute('position', {
+        x: 0,
+        y: 0,
+        z: 0
+      });
+    }
+
+    var rayCenter = document.createElement('a-entity');
+    
+    rayCreate(rayCenter, 'center');
+    this.el.appendChild(rayCenter);
+    this.rayCenter = rayCenter;
+    
+    var pointCenter;
+
+    document.querySelector(surface).addEventListener('raycaster-intersected', function (event) {
+      
+      if (event.detail.el == rayCenter) {
+        pointCenter = event.detail.intersection.point;
+      }
+      
+      el.children[0].setAttribute('position', {x: pointCenter.x - position.x, y: pointCenter.y - position.y - 10, z: pointCenter.z - position.z}); 
+      
+    });
+  },
+
+  tick: function() {
+    var castRay = function (element) {
+      element.removeAttribute('raycaster');
+      element.setAttribute('raycaster', 'showLine: false;');
+    }
+
+    castRay(this.rayCenter);
   }
 
 });
