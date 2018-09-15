@@ -8,30 +8,17 @@ AFRAME.registerComponent('floating', {
     depth: {
       type: 'number',
       default: 1
-<<<<<<< HEAD
-=======
-    }, 
+    },
     dampening: {
       type: 'array',
       default: [1, 1, 1]
     },
     surface: {
       type: 'string'
->>>>>>> glitch
     }
   },
 
   update: function() {
-<<<<<<< HEAD
-    var scene = this.el.sceneEl;
-    var depth = this.data.depth;
-    var width = this.data.width;
-    var position = this.el.components.position.data;
-
-    var rayCreate = function (element, position) {
-      element.setAttribute('id', 'ray-' + position);
-      // element.setAttribute('raycaster', 'showLine: true;');
-=======
     var el = this.el;
     var scene = this.el.sceneEl;
     var depth = this.data.depth;
@@ -39,12 +26,11 @@ AFRAME.registerComponent('floating', {
     var dampening = this.data.dampening;
     var surface = this.data.surface;
     var position = this.el.components.position.data;
-    
+
     this.el.setAttribute('position', {x: position.x, y: position.y + 10, z: position.z });
 
     var rayCreate = function (element, position) {
       element.setAttribute('id', 'ray-' + position);
->>>>>>> glitch
       element.setAttribute('rotation', {
         x: -90,
         y: 90,
@@ -100,44 +86,25 @@ AFRAME.registerComponent('floating', {
     rayCreate(rayRight, 'right');
     this.el.appendChild(rayRight);
     this.rayRight = rayRight;
-<<<<<<< HEAD
 
-    document.querySelector('#ocean').addEventListener('raycaster-intersected', function (event) {
-      if (event.detail.el == rayBack) {
-        var pointBack = event.detail.intersection.point;
-        document.querySelector('#pointBack').setAttribute('position', pointBack);
-      } else if (event.detail.el == rayFront) {
-        var pointFront = event.detail.intersection.point;
-        document.querySelector('#pointFront').setAttribute('position', pointFront);
-      } else if (event.detail.el == rayLeft) {
-        var pointLeft = event.detail.intersection.point;
-        document.querySelector('#pointLeft').setAttribute('position', pointLeft);
-      } if (event.detail.el == rayRight) {
-        var pointRight = event.detail.intersection.point;
-        document.querySelector('#pointRight').setAttribute('position', pointRight);
-      }
-    });
-  },
-=======
-    
     var pointBack;
     var pointFront;
     var pointLeft;
     var pointRight;
-    
+
     var oceanTilt = function () {
       var angleZ;
       var angleX;
-      
+
       angleX = -(Math.atan((pointBack.y + pointFront.y)/(depth * 2))) * (180/Math.PI);
       angleZ = (Math.atan((pointLeft.y + pointRight.y)/(width * 2))) * (180/Math.PI);
-      
+
 
       el.children[0].setAttribute('rotation', {x: angleX * dampening[0], y: 0, z: angleZ * dampening[1]});
     };
 
     document.querySelector(surface).addEventListener('raycaster-intersected', function (event) {
-      
+
       if (event.detail.el == rayBack) {
         pointBack = event.detail.intersection.point;
       } else if (event.detail.el == rayFront) {
@@ -147,13 +114,13 @@ AFRAME.registerComponent('floating', {
       } if (event.detail.el == rayRight) {
         pointRight = event.detail.intersection.point;
       }
-      
+
       var pointAverage = (pointFront.y + pointBack.y + pointLeft.y + pointRight.y)/4;
-      
-      el.children[0].setAttribute('position', {y: (pointAverage * dampening[2]) - 10}); 
-      
+
+      el.children[0].setAttribute('position', {y: (pointAverage * dampening[2]) - 10});
+
       oceanTilt();
-      
+
     });
   },
 
@@ -167,16 +134,16 @@ AFRAME.registerComponent('floating', {
     castRay(this.rayFront);
     castRay(this.rayLeft);
     castRay(this.rayRight);
-    
+
   },
-  
+
   remove: {}
 
 });
 
 AFRAME.registerComponent('floating-small', {
 
-  schema: { 
+  schema: {
     surface: {
       type: 'string'
     }
@@ -187,7 +154,7 @@ AFRAME.registerComponent('floating-small', {
     var scene = this.el.sceneEl;
     var surface = this.data.surface;
     var position = this.el.components.position.data;
-    
+
     this.el.setAttribute('position', {x: position.x, y: position.y + 10, z: position.z });
 
     var rayCreate = function (element, position) {
@@ -196,7 +163,7 @@ AFRAME.registerComponent('floating-small', {
         x: -90,
         y: 90,
         z: 0
-      }); 
+      });
       element.setAttribute('position', {
         x: 0,
         y: 0,
@@ -205,48 +172,33 @@ AFRAME.registerComponent('floating-small', {
     }
 
     var rayCenter = document.createElement('a-entity');
-    
+
     rayCreate(rayCenter, 'center');
     this.el.appendChild(rayCenter);
     this.rayCenter = rayCenter;
-    
+
     var pointCenter;
 
     document.querySelector(surface).addEventListener('raycaster-intersected', function (event) {
-      
+
       if (event.detail.el == rayCenter) {
         pointCenter = event.detail.intersection.point;
       }
-      
-      el.children[0].setAttribute('position', {x: pointCenter.x - position.x, y: pointCenter.y - position.y - 10, z: pointCenter.z - position.z}); 
-      
+
+      el.children[0].setAttribute('position', {x: pointCenter.x - position.x, y: pointCenter.y - position.y - 10, z: pointCenter.z - position.z});
+
     });
   },
->>>>>>> glitch
 
   tick: function() {
     var castRay = function (element) {
       element.removeAttribute('raycaster');
-<<<<<<< HEAD
-      element.setAttribute('raycaster', 'showLine: true;');
-    }
-
-    castRay(this.rayBack);
-    castRay(this.rayFront);
-    castRay(this.rayLeft);
-    castRay(this.rayRight);
-
-  }
-
-});
-=======
       element.setAttribute('raycaster', 'showLine: false;');
     }
 
     castRay(this.rayCenter);
   },
-  
+
   remove: {},
 
 });
->>>>>>> glitch
