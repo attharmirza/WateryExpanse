@@ -135,7 +135,9 @@ AFRAME.registerComponent('floating', {
     castRay(this.rayLeft);
     castRay(this.rayRight);
     
-  }
+  },
+  
+  remove: {}
 
 });
 
@@ -195,6 +197,8 @@ AFRAME.registerComponent('floating-small', {
     }
 
     castRay(this.rayCenter);
-  }
+  },
+  
+  remove: {},
 
 });

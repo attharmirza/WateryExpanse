@@ -18,6 +18,7 @@
   <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v4.1.2/dist/aframe-extras.min.js"></script>
   <!-- A-Frame Components-->
   <script src="components/float.js"></script>
+  <script src="components/meshMaterialReset.js"></script>
 </head>
 
 
@@ -25,41 +26,26 @@
   <a-scene fog="type: linear; color:#ffffff; near: 5; far: 50;">
     <!-- Assets -->
     <a-assets>
+      <a-asset-item id="dreamboat" src="https://cdn.glitch.com/ebed7c0e-8aba-4b86-a3f6-3e8344cfe655%2FDreamboat_v3_BedOnly.gltf?1536973626593"></a-asset-item>
+      <a-asset-item id="lifesaver" src="https://cdn.glitch.com/ebed7c0e-8aba-4b86-a3f6-3e8344cfe655%2FLifesaver_v1.gltf?1536975539318"></a-asset-item>
     </a-assets>
 
     <!-- Environment & Objects -->
-    <a-entity position="-1 0 -8" rotation="0 28 0" floating="width: 2; depth: 2; dampening: 0.8, 0.8, 0.6; surface: #ocean;">
-      <a-box id="pointAverage" width="3" height="0.7" depth="3"></a-box>
+    <a-entity position="-1 0 -10" rotation="0 160 0" floating="width: 2; depth: 4; dampening: 0.7, 1, 1; surface: #ocean;">
+      <a-entity gltf-model="#dreamboat" scale="0.5 0.5 0.5" material="shader: standard;" mesh-material-reset></a-entity>
     </a-entity>
-    <a-entity position="3 0 -5" rotation="0 18 0" floating-small="surface: #ocean;">
-      <a-box width="0.2" height="0.2" depth="0.2"></a-box>
-    </a-entity>
-    <a-entity position="-4 0 -9" rotation="0 45 0" floating-small="surface: #ocean;">
-      <a-box width="0.2" height="0.2" depth="0.2"></a-box>
-    </a-entity>
-    <a-entity position="-1 0 -3" rotation="0 10 0" floating-small="surface: #ocean;">
-      <a-box width="0.2" height="0.2" depth="0.2"></a-box>
-    </a-entity>
-    <a-entity position="1 0 -4" rotation="0 99 0" floating-small="surface: #ocean;">
-      <a-box width="0.2" height="0.2" depth="0.2"></a-box>
-    </a-entity>
-    <a-entity position="1 0 -10" rotation="0 105 0" floating-small="surface: #ocean;">
-      <a-box width="0.2" height="0.2" depth="0.2"></a-box>
-    </a-entity>
-    <a-entity position="2 0 -12" rotation="0 25 0" floating-small="surface: #ocean;">
-      <a-box width="0.2" height="0.2" depth="0.2"></a-box>
-    </a-entity>
+    
 
     <!-- Defaults -->
     <a-entity id="camera1" camera look-controls="enabled: false;" position="0 2 0"></a-entity>
-    <a-light type="directional" position="3 10 -5"></a-light>
+    <a-light type="directional" position="2 10 8" intensity="1.0"></a-light>
     <a-sky segments-width="10" segments-height="10"></a-sky>
-    <a-ocean id="ocean" color="#FFFFFF" width="100" depth="100" density="30" speed="2"></a-ocean>
+    <a-ocean id="ocean" color="#FFFFFF" width="100" depth="100" density="30" speed="2" opacity="0.8"></a-ocean>
 
     <!-- Controllers -->
-    <a-entity hand-controls="left"></a-entity>
+    <!-- <a-entity hand-controls="left"></a-entity>
     <a-entity hand-controls="right"></a-entity>
-    <a-entity daydream-controls></a-entity>
+    <a-entity daydream-controls></a-entity> -->
   </a-scene>
 
 
