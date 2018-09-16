@@ -1,6 +1,10 @@
 AFRAME.registerComponent('floating', {
 
   schema: {
+    target: {
+      type: 'selector',
+      default: '',
+    },
     width: {
       type: 'number',
       default: 1
@@ -26,6 +30,9 @@ AFRAME.registerComponent('floating', {
     var dampening = this.data.dampening;
     var surface = this.data.surface;
     var position = this.el.components.position.data;
+    var target = this.data.target;
+
+    console.log(target);
 
     this.el.setAttribute('position', {x: position.x, y: position.y + 10, z: position.z });
 
@@ -64,7 +71,7 @@ AFRAME.registerComponent('floating', {
       } else {
         console.log('please use back, right, left, or front for position');
       };
-    }
+    };
 
     var rayBack = document.createElement('a-entity');
     var rayFront = document.createElement('a-entity');
@@ -100,7 +107,7 @@ AFRAME.registerComponent('floating', {
       angleZ = (Math.atan((pointLeft.y + pointRight.y)/(width * 2))) * (180/Math.PI);
 
 
-      el.children[0].setAttribute('rotation', {x: angleX * dampening[0], y: 0, z: angleZ * dampening[1]});
+      target.setAttribute('rotation', {x: angleX * dampening[0], y: 0, z: angleZ * dampening[1]});
     };
 
     document.querySelector(surface).addEventListener('raycaster-intersected', function (event) {
@@ -117,7 +124,7 @@ AFRAME.registerComponent('floating', {
 
       var pointAverage = (pointFront.y + pointBack.y + pointLeft.y + pointRight.y)/4;
 
-      el.children[0].setAttribute('position', {y: (pointAverage * dampening[2]) - 10});
+      target.setAttribute('position', {y: (pointAverage * dampening[2]) - 10});
 
       oceanTilt();
 
@@ -125,15 +132,15 @@ AFRAME.registerComponent('floating', {
   },
 
   tick: function() {
-    var castRay = function (element) {
+    var rayCast = function (element) {
       element.removeAttribute('raycaster');
       element.setAttribute('raycaster', 'showLine: false;');
     }
 
-    castRay(this.rayBack);
-    castRay(this.rayFront);
-    castRay(this.rayLeft);
-    castRay(this.rayRight);
+    rayCast(this.rayBack);
+    rayCast(this.rayFront);
+    rayCast(this.rayLeft);
+    rayCast(this.rayRight);
 
   },
 
@@ -144,6 +151,10 @@ AFRAME.registerComponent('floating', {
 AFRAME.registerComponent('floating-small', {
 
   schema: {
+    target: {
+      type: 'selector',
+      default: '',
+    },
     surface: {
       type: 'string'
     }
@@ -154,6 +165,7 @@ AFRAME.registerComponent('floating-small', {
     var scene = this.el.sceneEl;
     var surface = this.data.surface;
     var position = this.el.components.position.data;
+    var target = this.data.target;
 
     this.el.setAttribute('position', {x: position.x, y: position.y + 10, z: position.z });
 
@@ -185,18 +197,18 @@ AFRAME.registerComponent('floating-small', {
         pointCenter = event.detail.intersection.point;
       }
 
-      el.children[0].setAttribute('position', {x: pointCenter.x - position.x, y: pointCenter.y - position.y - 10, z: pointCenter.z - position.z});
+      target.setAttribute('position', {x: pointCenter.x - position.x, y: pointCenter.y - position.y - 10, z: pointCenter.z - position.z});
 
     });
   },
 
   tick: function() {
-    var castRay = function (element) {
+    var rayCast = function (element) {
       element.removeAttribute('raycaster');
       element.setAttribute('raycaster', 'showLine: false;');
     }
 
-    castRay(this.rayCenter);
+    rayCast(this.rayCenter);
   },
 
   remove: {},
